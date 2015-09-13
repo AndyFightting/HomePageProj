@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>94F9571A-1FF6-4750-A086-9A6F569C5AA3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>HomePageProj</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>03D2CAB39F0EB5810426B12F08AB5EAE75D0CBA4</key>
+		<string>https://github.com/AndyFightting/HomePageProj.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>HomePageProj.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>03D2CAB39F0EB5810426B12F08AB5EAE75D0CBA4</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/AndyFightting/HomePageProj.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>03D2CAB39F0EB5810426B12F08AB5EAE75D0CBA4</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>03D2CAB39F0EB5810426B12F08AB5EAE75D0CBA4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>HomePageProj</string>
+		</dict>
+	</array>
+</dict>
+</plist>

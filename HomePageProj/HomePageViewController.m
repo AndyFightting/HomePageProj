@@ -23,8 +23,8 @@
     
     UIImageView* backImgView;//要正方形的背景图片！
     UIView* barBackView;
+    
     float barBtWidth;
-
     float table_ofset;
 
 }
@@ -174,6 +174,8 @@
     [self.navigationController.navigationBar setBackgroundImage:[self imageWithColor:[UIColor colorWithWhite:1 alpha:alpha]] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0 alpha:alpha];
     
+    
+    
 }
 
 -(UIImage *)imageWithColor:(UIColor *)color
@@ -187,6 +189,7 @@
     UIGraphicsEndImageContext();
     
     return theImage;
+
 }
 
 
