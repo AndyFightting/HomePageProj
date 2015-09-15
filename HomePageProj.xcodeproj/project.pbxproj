@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		76959FB71BA447B600B11FA4 /* backImg.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 76959FB51BA447B600B11FA4 /* backImg.JPG */; };
 		76959FB81BA447B600B11FA4 /* headImg.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 76959FB61BA447B600B11FA4 /* headImg.JPG */; };
+		769B87911BA8012B00C4CB52 /* BlurredView.m in Sources */ = {isa = PBXBuildFile; fileRef = 769B878E1BA8012B00C4CB52 /* BlurredView.m */; };
+		769B87921BA8012B00C4CB52 /* UIImage+BoxBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 769B87901BA8012B00C4CB52 /* UIImage+BoxBlur.m */; };
 		76AE62261BA16C0600B73D64 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76AE62251BA16C0600B73D64 /* main.m */; };
 		76AE62291BA16C0600B73D64 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76AE62281BA16C0600B73D64 /* AppDelegate.m */; };
 		76AE622C1BA16C0600B73D64 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76AE622B1BA16C0600B73D64 /* ViewController.m */; };
@@ -34,6 +36,10 @@
 /* Begin PBXFileReference section */
 		76959FB51BA447B600B11FA4 /* backImg.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backImg.JPG; sourceTree = "<group>"; };
 		76959FB61BA447B600B11FA4 /* headImg.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = headImg.JPG; sourceTree = "<group>"; };
+		769B878D1BA8012B00C4CB52 /* BlurredView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurredView.h; sourceTree = "<group>"; };
+		769B878E1BA8012B00C4CB52 /* BlurredView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlurredView.m; sourceTree = "<group>"; };
+		769B878F1BA8012B00C4CB52 /* UIImage+BoxBlur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BoxBlur.h"; sourceTree = "<group>"; };
+		769B87901BA8012B00C4CB52 /* UIImage+BoxBlur.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BoxBlur.m"; sourceTree = "<group>"; };
 		76AE62201BA16C0600B73D64 /* HomePageProj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomePageProj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76AE62241BA16C0600B73D64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76AE62251BA16C0600B73D64 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -75,6 +81,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		769B878C1BA8010000C4CB52 /* BlurredView */ = {
+			isa = PBXGroup;
+			children = (
+				769B878D1BA8012B00C4CB52 /* BlurredView.h */,
+				769B878E1BA8012B00C4CB52 /* BlurredView.m */,
+				769B878F1BA8012B00C4CB52 /* UIImage+BoxBlur.h */,
+				769B87901BA8012B00C4CB52 /* UIImage+BoxBlur.m */,
+			);
+			name = BlurredView;
+			sourceTree = "<group>";
+		};
 		76AE62171BA16C0600B73D64 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +159,7 @@
 		76AE624F1BA172FE00B73D64 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				769B878C1BA8010000C4CB52 /* BlurredView */,
 				76959FB51BA447B600B11FA4 /* backImg.JPG */,
 				76959FB61BA447B600B11FA4 /* headImg.JPG */,
 				76AE62491BA1707800B73D64 /* HomePageViewController.h */,
@@ -255,10 +273,12 @@
 				76AE62551BA1737A00B73D64 /* TwoTableViewController.m in Sources */,
 				76AE62521BA1736D00B73D64 /* OneTableViewController.m in Sources */,
 				76AE624B1BA1707800B73D64 /* HomePageViewController.m in Sources */,
+				769B87911BA8012B00C4CB52 /* BlurredView.m in Sources */,
 				76AE622C1BA16C0600B73D64 /* ViewController.m in Sources */,
 				76AE62581BA1738700B73D64 /* ThreeTableViewController.m in Sources */,
 				76AE62291BA16C0600B73D64 /* AppDelegate.m in Sources */,
 				76AE62261BA16C0600B73D64 /* main.m in Sources */,
+				769B87921BA8012B00C4CB52 /* UIImage+BoxBlur.m in Sources */,
 				76AE624E1BA172AF00B73D64 /* BaseTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

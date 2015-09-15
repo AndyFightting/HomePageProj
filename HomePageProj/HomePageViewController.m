@@ -11,6 +11,7 @@
 #import "TwoTableViewController.h"
 #import "ThreeTableViewController.h"
 
+#import "BlurredView.h"
 
 @interface HomePageViewController ()<ScrollingDelegate>
 
@@ -21,11 +22,13 @@
     UILabel* titleLabel;
     UILabel* moveLabel;
     
-    UIImageView* backImgView;//要正方形的背景图片！
+    BlurredView* blurredView;//要正方形的背景图片！
     UIView* barBackView;
     
     float barBtWidth;
     float table_ofset;
+    
+    BlurredView* ss;
 
 }
 
@@ -49,8 +52,9 @@
     [self addChildViewController:threeVC];
 
     [self initView];
-    
+
 }
+
 
 -(void)initView{
     
@@ -74,25 +78,25 @@
 
     UIImage* backImg = [UIImage imageNamed:@"backImg.JPG"];
 
-    backImgView = [[UIImageView alloc]initWithFrame:CGRectMake(0, -(view_width-back_img_height), view_width,view_width)];
-    [backImgView setImage:backImg];
-    backImgView.userInteractionEnabled = YES;
-    [self.view addSubview:backImgView];
+    blurredView = [[BlurredView alloc]initWithFrame:CGRectMake(0, -(view_width-back_img_height), view_width,view_width)];
+    [blurredView setBackgroundImage:backImg];
+    blurredView.userInteractionEnabled = YES;
+    [self.view addSubview:blurredView];
     
     UITapGestureRecognizer* backImgGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backImgTaped)];
-    [backImgView addGestureRecognizer:backImgGes];
+    [blurredView addGestureRecognizer:backImgGes];
     
     UIImageView* headImg = [[UIImageView alloc]initWithFrame:CGRectMake((view_width-80)/2, view_width-150, 80, 80)];
     [headImg setImage:[UIImage imageNamed:@"headImg.JPG"]];
     headImg.layer.cornerRadius = 40;
     headImg.layer.masksToBounds = YES;
-    [backImgView addSubview:headImg];
+    [blurredView addSubview:headImg];
 
     UILabel* nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,view_width-70 ,view_width ,30 )];
     nameLabel.text = @"阿贵";
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.textAlignment = NSTextAlignmentCenter;
-    [backImgView addSubview:nameLabel];
+    [blurredView addSubview:nameLabel];
 }
 
 -(void)backImgTaped{
@@ -136,7 +140,7 @@
     [self.view addSubview:currentVC.view];
     [currentVC.tableView setContentOffset:CGPointMake(0, table_ofset)];
     
-    [self.view bringSubviewToFront:backImgView];
+    [self.view bringSubviewToFront:blurredView];
     [self.view bringSubviewToFront:barBackView];
     
     [UIView animateWithDuration:0.25 animations:^{
@@ -157,9 +161,9 @@
     tmpBarFrame.origin.y = tmpY;
     barBackView.frame = tmpBarFrame;
 
-    CGRect tmpImgFrame = backImgView.frame;
+    CGRect tmpImgFrame = blurredView.frame;
     tmpImgFrame.origin.y = tmpY-view_width;
-    backImgView.frame = tmpImgFrame;
+    blurredView.frame = tmpImgFrame;
     
     //透明处理-------
     CGFloat alpha =0;
@@ -170,10 +174,14 @@
     }
     UIColor *alphaColor = [UIColor colorWithWhite:0 alpha:alpha];
     [titleLabel setTextColor:alphaColor];
-
-    [self.navigationController.navigationBar setBackgroundImage:[self imageWithColor:[UIColor colorWithWhite:1 alpha:alpha]] forBarMetrics:UIBarMetricsDefault];
     self.navigationController.navigationBar.tintColor = [UIColor colorWithWhite:0 alpha:alpha];
+
     
+    //方式- **************** 白色导航背景
+//    [self.navigationController.navigationBar setBackgroundImage:[self imageWithColor:[UIColor colorWithWhite:1 alpha:alpha]] forBarMetrics:UIBarMetricsDefault];
+    
+    //方式二 **************** 模糊导航背景
+    [blurredView updateBlurringWithFloatValue:200-tmpY]; //传 <=0 的值！越小越模糊
     
     
 }
