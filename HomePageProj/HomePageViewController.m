@@ -79,9 +79,13 @@
     UIImage* backImg = [UIImage imageNamed:@"backImg.JPG"];
 
     blurredView = [[BlurredView alloc]initWithFrame:CGRectMake(0, -(view_width-back_img_height), view_width,view_width)];
+    
     [blurredView setBackgroundImage:backImg];
     blurredView.userInteractionEnabled = YES;
     [self.view addSubview:blurredView];
+    
+    //按时间渐变
+    [blurredView updateBlurringDuringSecond:1];
     
     UITapGestureRecognizer* backImgGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backImgTaped)];
     [blurredView addGestureRecognizer:backImgGes];

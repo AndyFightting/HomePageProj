@@ -14,11 +14,14 @@
 #define DEFAULT_TINT_COLOR [UIColor clearColor]
 #define DEFAULT_TINT_ALPHA_START 0.0
 #define DEFAULT_TINT_ALPHA_END 0.5
-#define DEFAULT_ANIMATION_DURATION 0.25
 
 
 @implementation BlurredView{
-    CGPoint tmpOffset;
+    
+    BOOL rendering;
+    NSMutableArray *frames;
+    NSInteger framesCount;
+    CGFloat compressionQuality;
     UIImageView *backgroundImageView;
 }
 
@@ -47,8 +50,8 @@
 -(void)initialize
 {
     // Default of 20 total frames for blurring.
-    if (!_framesCount)
-    {_framesCount = DEFAULT_FRAMES_COUNT;}
+    if (!framesCount)
+    {framesCount = DEFAULT_FRAMES_COUNT;}
     
     // Default tint color if one doesn't exist.
     if (!_blurTintColor)
@@ -59,16 +62,10 @@
     {_roundingValue = DEFAULT_ROUNDING_VALUE;}
     
     // Revert to a default compression quality of 0.001f for performance reasons.
-    if (!_compressionQuality)
-    {_compressionQuality = DEFAULT_COMPRESSION_QUALITY;}
-    
-    // If we have animateOnLoad as YES, default animation duration is 0.25s
-    if (!_animationDuration)
-    {_animationDuration = DEFAULT_ANIMATION_DURATION;}
+    if (!compressionQuality)
+    {compressionQuality = DEFAULT_COMPRESSION_QUALITY;}
     
     // Process our opacity if animateOpacity is on.
-    if (_animateTintAlpha)
-    {
         // Only allow numbers between 0 and 1. Defaults to 0 if broken.
         if (_startTintAlpha < 0.0 || _startTintAlpha > 1.0)
         {_startTintAlpha = 0.0;}
@@ -76,10 +73,6 @@
         // Only allow numbers between 0 and 1. Defaults to 1 if broken.
         else if (_endTintAlpha < 0.0 || _endTintAlpha > 1.0)
         {_endTintAlpha = 1.0;}
-    }
-    
-    // Blur in our background if the user has called the tableView before the frames have finished processing.
-    _animateOnLoad = YES;
     
 }
 
@@ -99,7 +92,7 @@
 -(UIImage*)downsampleImage:(UIImage*)image
 {
     // Downsample our image.
-    NSData *imageData = UIImageJPEGRepresentation(image, _compressionQuality);
+    NSData *imageData = UIImageJPEGRepresentation(image, compressionQuality);
     UIImage *downSampledImage = [UIImage imageWithData:imageData];
     return downSampledImage;
 }
@@ -121,41 +114,26 @@
     
     // Set up our defaults.
     // Clear our our array.
-    _frames = [[NSMutableArray alloc]init];
+    frames = [[NSMutableArray alloc]init];
     
     // Generate blur frames if a background is available.
     if (_backgroundImage)
     {
         UIColor *processedTint = _blurTintColor;
         // Start with startTint instead of the tintColor's alpha if animateTint is active.
-        if(_animateTintAlpha)
-        {processedTint = [_blurTintColor colorWithAlphaComponent:_startTintAlpha];}
+        processedTint = [_blurTintColor colorWithAlphaComponent:_startTintAlpha];
         
         // Generate our first frame.
         UIImage *firstFrame = [_backgroundImage drn_boxblurImageWithBlur:0.0 withTintColor:processedTint];
         // Add our first frame to the array.
-        [_frames addObject:firstFrame];
+        [frames addObject:firstFrame];
         [backgroundImageView setImage:firstFrame];
         
         // Disable scroll blurring while rendering frames.
-        _rendering = YES;
+        rendering = YES;
         [self renderBlurFramesWithCompletion:^{
-            
-            // Animate in on completion.
-            if (_animateOnLoad){
-                CGFloat currentOffset = tmpOffset.y;
-                for (int i = 0; i < (int)currentOffset; i++)
-                {
-                    // This slows down our loop.
-                    [NSThread sleepForTimeInterval:_animationDuration/currentOffset];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        {[self updateBlurringWithFloatValue:i];
-                        }
-                    });
-                }
-            }
             // Done rendering. Re-enable scroll bluring.
-            _rendering = NO;
+            rendering = NO;
         }];
     }
 }
@@ -184,27 +162,25 @@
     CGFloat difference = _endTintAlpha - _startTintAlpha;
     
     // If animating tintAlpha, step up alpha by the difference over the framesCount.
-    CGFloat incrementBy = difference / (CGFloat)_framesCount;
+    CGFloat incrementBy = difference / (CGFloat)framesCount;
     
     // Generate our frames based on the number of frames allowed.
     // We set our first frame earlier to preserve image fidelity. This is 1 and up.
-    for(int frame = 1; frame < _framesCount; frame++)
+    for(int frame = 1; frame < framesCount; frame++)
     {
         // The color we'll use to tint with, changing if animate is on.
         UIColor *processColor = _blurTintColor;
         
         // If animating our tintAlpha, set the processColor's alpha to the startAlpha.
-        if (_animateTintAlpha){
             // Increment by our incrementBy.
             i = i + incrementBy;
             processColor = [_blurTintColor colorWithAlphaComponent:i];
-        }
         
             // Blur with specified tint color.
-            UIImage *image = [downsampledImage drn_boxblurImageWithBlur:((CGFloat)frame/(_framesCount-1)) withTintColor:processColor];
+            UIImage *image = [downsampledImage drn_boxblurImageWithBlur:((CGFloat)frame/(framesCount-1)) withTintColor:processColor];
             
             // add to our frames array.
-            [_frames addObject:image];
+            [frames addObject:image];
     }
 }
 
@@ -213,7 +189,7 @@
 
 -(void)updateBlurringWithFloatValue:(CGFloat)floatValue
 {
-    if (_rendering){//正在处理就跳过
+    if (rendering){//正在处理就跳过
         return;
     }
     
@@ -223,14 +199,47 @@
     // If that value is lower than 0 or over the maximum, ignore it.
     if (frame < 0)
     {frame = 0;}
-    else if (frame >= _framesCount)
-    {frame = _framesCount - 1;}
+    else if (frame >= framesCount)
+    {frame = framesCount - 1;}
     
     // Calculate blur based on the contentOffset.y. The more frames we have and the larger the rounding value, the further the blur lasts.
     //UIImage *image = [_frames objectAtIndex:frame];
-    [backgroundImageView setImage:[_frames objectAtIndex:frame]];
+    [backgroundImageView setImage:[frames objectAtIndex:frame]];
     
 }
 
+
+-(void)updateBlurringDuringSecond:(CGFloat)second{
+    
+    if (_backgroundImage)
+    {
+        UIColor *processedTint = _blurTintColor;
+        // Start with startTint instead of the tintColor's alpha if animateTint is active.
+        processedTint = [_blurTintColor colorWithAlphaComponent:_startTintAlpha];
+        
+        // Generate our first frame.
+        UIImage *firstFrame = [_backgroundImage drn_boxblurImageWithBlur:0.0 withTintColor:processedTint];
+        // Add our first frame to the array.
+        [frames addObject:firstFrame];
+        [backgroundImageView setImage:firstFrame];
+        
+        // Disable scroll blurring while rendering frames.
+        rendering = YES;
+        [self renderBlurFramesWithCompletion:^{
+            CGFloat currentOffset = 300;
+            for (int i = 0; i < (int)currentOffset; i++)
+            {
+                // This slows down our loop.
+                [NSThread sleepForTimeInterval:second/currentOffset];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    {[self updateBlurringWithFloatValue:i];
+                    }
+                });
+            }
+            // Done rendering. Re-enable scroll bluring.
+            rendering = NO;
+        }];
+    }
+}
 
 @end
